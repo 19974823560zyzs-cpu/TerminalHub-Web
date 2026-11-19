@@ -13,10 +13,22 @@
             --accent-color: #58a6ff;
             --btn-bg: #238636;
             --btn-hover: #2ea043;
-            --card-bg: #161b22;
-            --border-color: #30363d;
+            --card-bg: rgba(22, 27, 34, 0.65); /* 半透明卡片 */
+            --border-color: rgba(48, 54, 61, 0.8);
             --text-muted: #8b949e;
         }
+        
+        /* 动态背景画布 */
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle at 50% 0%, #161b22, var(--bg-color));
+        }
+
         body {
             margin: 0;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -24,12 +36,15 @@
             color: var(--text-color);
             line-height: 1.6;
             scroll-behavior: smooth;
+            overflow-x: hidden;
         }
+
         header {
             text-align: center;
             padding: 80px 20px 60px;
-            background: radial-gradient(circle at 50% -20%, #1f242d, var(--bg-color));
+            position: relative;
         }
+
         .version-badge {
             display: inline-block;
             background-color: rgba(88, 166, 255, 0.1);
@@ -41,35 +56,37 @@
             font-weight: bold;
             margin-bottom: 20px;
             font-family: monospace;
+            backdrop-filter: blur(4px);
         }
+
         h1 {
             font-size: 3.5em;
             margin: 0 0 10px;
             color: #fff;
             letter-spacing: -1px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
         }
+
         .subtitle {
             font-size: 1.2em;
             color: var(--text-muted);
             max-width: 650px;
             margin: 0 auto 40px;
+            text-shadow: 0 1px 5px rgba(0,0,0,0.5);
         }
+
         .download-group {
             display: flex;
             justify-content: center;
             gap: 16px;
             flex-wrap: wrap;
-            align-items: flex-start;
+            align-items: stretch;
         }
-        .btn-wrapper {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-        }
+
         .btn {
             display: inline-flex;
             align-items: center;
+            justify-content: center;
             padding: 12px 24px;
             border-radius: 6px;
             text-decoration: none;
@@ -77,26 +94,43 @@
             font-size: 1.05em;
             transition: all 0.2s;
             border: 1px solid rgba(240, 246, 252, 0.1);
+            backdrop-filter: blur(8px);
         }
-        .btn-primary { background-color: var(--btn-bg); color: white; }
-        .btn-primary:hover { background-color: var(--btn-hover); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(35,134,54,0.3); }
-        .btn-secondary { background-color: #21262d; color: var(--text-color); }
-        .btn-secondary:hover { background-color: #30363d; transform: translateY(-2px); }
-        
-        .pwd-hint {
-            font-size: 0.85em;
-            color: var(--text-muted);
-            background-color: var(--card-bg);
-            padding: 4px 10px;
-            border-radius: 4px;
-            border: 1px solid var(--border-color);
-            font-family: monospace;
+
+        .btn-primary { 
+            background-color: rgba(35, 134, 54, 0.85); 
+            color: white; 
+            border-color: rgba(46, 160, 67, 0.5);
         }
-        .pwd-hint span {
+        .btn-primary:hover { 
+            background-color: rgba(46, 160, 67, 0.95); 
+            transform: translateY(-2px); 
+            box-shadow: 0 6px 20px rgba(35,134,54,0.4); 
+        }
+
+        .btn-secondary { 
+            background-color: rgba(33, 38, 45, 0.85); 
+            color: var(--text-color); 
+        }
+        .btn-secondary:hover { 
+            background-color: rgba(48, 54, 61, 0.95); 
+            transform: translateY(-2px); 
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3); 
+        }
+
+        /* 提取码小徽章 */
+        .pwd-badge {
+            background-color: rgba(0, 0, 0, 0.35);
             color: #fff;
-            font-weight: bold;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            font-family: monospace;
+            margin-left: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
             letter-spacing: 1px;
         }
+        .pwd-badge span { color: #58a6ff; font-weight: bold; }
 
         .container {
             max-width: 1000px;
@@ -119,6 +153,7 @@
             background-color: var(--accent-color);
             margin: 10px auto 0;
             border-radius: 2px;
+            box-shadow: 0 0 10px var(--accent-color);
         }
 
         /* 核心功能网格 */
@@ -133,17 +168,24 @@
             padding: 30px;
             border-radius: 8px;
             border: 1px solid var(--border-color);
-            transition: transform 0.2s, border-color 0.2s;
+            transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+            backdrop-filter: blur(12px);
         }
-        .feature-card:hover { transform: translateY(-5px); border-color: var(--accent-color); }
+        .feature-card:hover { 
+            transform: translateY(-5px); 
+            border-color: rgba(88, 166, 255, 0.6); 
+            box-shadow: 0 8px 30px rgba(88, 166, 255, 0.1);
+        }
         .feature-card h3 { color: var(--accent-color); margin-top: 0; font-size: 1.2em; }
         .feature-card p { color: var(--text-muted); font-size: 0.95em; margin-bottom: 0;}
+        
         code {
             background-color: rgba(110, 118, 129, 0.4);
             padding: 2px 6px;
             border-radius: 4px;
             font-family: monospace;
             font-size: 0.9em;
+            color: #e6edf3;
         }
 
         /* 开发团队 */
@@ -154,23 +196,24 @@
             padding: 40px;
             border-radius: 8px;
             border: 1px solid var(--border-color);
+            backdrop-filter: blur(12px);
         }
         .leader-card {
             display: inline-block;
-            background-color: #0d1117;
+            background-color: rgba(13, 17, 23, 0.8);
             padding: 20px 40px;
             border-radius: 12px;
             border: 1px solid rgba(88, 166, 255, 0.3);
-            box-shadow: 0 0 20px rgba(88, 166, 255, 0.05);
+            box-shadow: 0 0 30px rgba(88, 166, 255, 0.15);
             margin-bottom: 20px;
         }
         .leader-name-art {
-            font-family: 'Ma Shan Zheng', cursive, sans-serif; /* 书法字体 */
-            font-size: 3em;
+            font-family: 'Ma Shan Zheng', cursive, sans-serif;
+            font-size: 3.5em;
             color: #fff;
             line-height: 1;
             margin-bottom: 10px;
-            text-shadow: 0 0 15px rgba(88, 166, 255, 0.4);
+            text-shadow: 0 0 20px rgba(88, 166, 255, 0.6);
         }
         .leader-role {
             color: var(--accent-color);
@@ -214,7 +257,8 @@
             border-radius: 50%;
             background-color: var(--accent-color);
             border: 3px solid var(--bg-color);
-            box-shadow: 0 0 0 2px rgba(88, 166, 255, 0.3);
+            box-shadow: 0 0 0 2px rgba(88, 166, 255, 0.3), 0 0 15px rgba(88, 166, 255, 0.5);
+            z-index: 1;
         }
         .log-version {
             font-size: 1.2em;
@@ -238,6 +282,7 @@
             border: 1px solid var(--border-color);
             color: var(--text-muted);
             font-size: 0.95em;
+            backdrop-filter: blur(12px);
         }
         .log-content ul {
             margin: 0;
@@ -255,11 +300,15 @@
             color: var(--text-muted);
             border-top: 1px solid var(--border-color);
             font-size: 0.9em;
-            background-color: #090c10;
+            background-color: rgba(9, 12, 16, 0.8);
+            backdrop-filter: blur(10px);
         }
     </style>
 </head>
 <body>
+
+    <!-- 动态粒子背景 -->
+    <canvas id="bg-canvas"></canvas>
 
     <header>
         <div class="version-badge">当前版本 v2026.11.19 - Termux 宿主里程碑版</div>
@@ -267,22 +316,18 @@
         <p class="subtitle">Android 原生全内置终端应用。零报错、完美输入、自建 Termux 树状架构，突破 Android 10+ 执行限制。</p>
         
         <div class="download-group">
-            <!-- 蓝奏云下载按钮与密码 -->
-            <div class="btn-wrapper">
-                <a href="https://wwaxv.lanzouc.com/igwCM4gmi5bc" class="btn btn-primary" target="_blank">
-                    <svg style="width:20px;height:20px;margin-right:8px;" fill="currentColor" viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/></svg>
-                    蓝奏云极速下载
-                </a>
-                <div class="pwd-hint">提取码: <span>heo7</span></div>
-            </div>
+            <!-- 蓝奏云下载按钮 (内含提取码) -->
+            <a href="https://wwaxv.lanzouc.com/igwCM4gmi5bc" class="btn btn-primary" target="_blank">
+                <svg style="width:20px;height:20px;margin-right:8px;" fill="currentColor" viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/></svg>
+                蓝奏云极速下载
+                <div class="pwd-badge">提取码: <span>heo7</span></div>
+            </a>
 
             <!-- GitHub 直链下载按钮 -->
-            <div class="btn-wrapper">
-                <a href="https://github.com/19974823560zyzs-cpu/TerminalHub-Web/releases/download/v2026.11.19/app-release.apk" class="btn btn-secondary" target="_blank">
-                    <svg style="width:20px;height:20px;margin-right:8px;" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-                    GitHub 极速下载
-                </a>
-            </div>
+            <a href="https://github.com/19974823560zyzs-cpu/TerminalHub-Web/releases/download/v2026.11.19/app-release.apk" class="btn btn-secondary" target="_blank">
+                <svg style="width:20px;height:20px;margin-right:8px;" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                GitHub 极速下载
+            </a>
         </div>
     </header>
 
@@ -312,7 +357,6 @@
         <h2 class="section-title">开发团队</h2>
         <section class="team-section">
             <div class="leader-card">
-                <!-- 使用草书字体渲染的“悦” -->
                 <div class="leader-name-art">悦</div>
                 <div class="leader-role">Project Leader / 架构师</div>
             </div>
@@ -362,5 +406,71 @@
         <p>Hosted on GitHub Pages / Powered by GitHub.</p>
     </footer>
 
+    <!-- 动态背景 JS -->
+    <script>
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        let particles = [];
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.5;
+                this.vy = (Math.random() - 0.5) * 0.5;
+                this.radius = Math.random() * 1.5 + 0.5;
+            }
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                if (this.x < 0 || this.x > width) this.vx = -this.vx;
+                if (this.y < 0 || this.y > height) this.vy = -this.vy;
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(88, 166, 255, 0.4)'; // 极客蓝
+                ctx.fill();
+            }
+        }
+
+        const particleCount = Math.min(Math.floor(width * height / 15000), 100);
+        for (let i = 0; i < particleCount; i++) {
+            particles.push(new Particle());
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+                
+                // 画连线
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < 120) {
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.strokeStyle = `rgba(88, 166, 255, ${0.15 - dist / 120 * 0.15})`;
+                        ctx.lineWidth = 0.8;
+                        ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(animate);
+        }
+        animate();
+    </script>
 </body>
 </html>
