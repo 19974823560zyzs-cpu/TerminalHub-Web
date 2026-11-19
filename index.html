@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TerminalHub - 全内置终端应用</title>
+    <!-- 引入书法字体 -->
+    <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-color: #0d1117;
@@ -57,6 +59,13 @@
             justify-content: center;
             gap: 16px;
             flex-wrap: wrap;
+            align-items: flex-start;
+        }
+        .btn-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
         }
         .btn {
             display: inline-flex;
@@ -74,6 +83,21 @@
         .btn-secondary { background-color: #21262d; color: var(--text-color); }
         .btn-secondary:hover { background-color: #30363d; transform: translateY(-2px); }
         
+        .pwd-hint {
+            font-size: 0.85em;
+            color: var(--text-muted);
+            background-color: var(--card-bg);
+            padding: 4px 10px;
+            border-radius: 4px;
+            border: 1px solid var(--border-color);
+            font-family: monospace;
+        }
+        .pwd-hint span {
+            color: #fff;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
         .container {
             max-width: 1000px;
             margin: 0 auto;
@@ -138,12 +162,15 @@
             border-radius: 12px;
             border: 1px solid rgba(88, 166, 255, 0.3);
             box-shadow: 0 0 20px rgba(88, 166, 255, 0.05);
+            margin-bottom: 20px;
         }
-        .leader-name {
-            font-size: 1.5em;
-            font-weight: bold;
+        .leader-name-art {
+            font-family: 'Ma Shan Zheng', cursive, sans-serif; /* 书法字体 */
+            font-size: 3em;
             color: #fff;
-            margin-bottom: 5px;
+            line-height: 1;
+            margin-bottom: 10px;
+            text-shadow: 0 0 15px rgba(88, 166, 255, 0.4);
         }
         .leader-role {
             color: var(--accent-color);
@@ -151,9 +178,10 @@
             font-family: monospace;
         }
         .team-desc {
-            margin-top: 20px;
             color: var(--text-muted);
             font-size: 0.95em;
+            max-width: 800px;
+            margin: 0 auto;
         }
 
         /* 更新日志时间线 */
@@ -234,20 +262,27 @@
 <body>
 
     <header>
-        <div class="version-badge">当前版本 v2.0.0 - Termux 宿主里程碑版</div>
+        <div class="version-badge">当前版本 v2026.11.19 - Termux 宿主里程碑版</div>
         <h1>TerminalHub</h1>
         <p class="subtitle">Android 原生全内置终端应用。零报错、完美输入、自建 Termux 树状架构，突破 Android 10+ 执行限制。</p>
+        
         <div class="download-group">
-            <!-- 这里替换成你的蓝奏云链接 -->
-            <a href="这里填你的蓝奏云链接" class="btn btn-primary" target="_blank">
-                <svg style="width:20px;height:20px;margin-right:8px;" fill="currentColor" viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/></svg>
-                蓝奏云极速下载
-            </a>
-            <!-- 这里替换成你的 GitHub Release 链接 -->
-            <a href="这里填你的GitHub仓库/releases" class="btn btn-secondary" target="_blank">
-                <svg style="width:20px;height:20px;margin-right:8px;" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-                GitHub 开源仓库
-            </a>
+            <!-- 蓝奏云下载按钮与密码 -->
+            <div class="btn-wrapper">
+                <a href="https://wwaxv.lanzouc.com/igwCM4gmi5bc" class="btn btn-primary" target="_blank">
+                    <svg style="width:20px;height:20px;margin-right:8px;" fill="currentColor" viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/></svg>
+                    蓝奏云极速下载
+                </a>
+                <div class="pwd-hint">提取码: <span>heo7</span></div>
+            </div>
+
+            <!-- GitHub 直链下载按钮 -->
+            <div class="btn-wrapper">
+                <a href="https://github.com/19974823560zyzs-cpu/TerminalHub-Web/releases/download/v2026.11.19/app-release.apk" class="btn btn-secondary" target="_blank">
+                    <svg style="width:20px;height:20px;margin-right:8px;" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                    GitHub 极速下载
+                </a>
+            </div>
         </div>
     </header>
 
@@ -277,11 +312,12 @@
         <h2 class="section-title">开发团队</h2>
         <section class="team-section">
             <div class="leader-card">
-                <div class="leader-name">大队长 悦</div>
+                <!-- 使用草书字体渲染的“悦” -->
+                <div class="leader-name-art">悦</div>
                 <div class="leader-role">Project Leader / 架构师</div>
             </div>
             <p class="team-desc">
-                本项目由「大队长悦」带领 <strong>DSH 智能体团队</strong> 协作开发。<br>
+                本项目由 <strong>悦</strong> 带领 <strong>DSH 智能体团队</strong> 协作开发。<br>
                 团队包含：底层攻坚 (arch-finalizer)、环境隔离 (env-inventory)、UI 开发 (ui-developer)、合规审查 (code-reviewer)、真机验证 (device-verifier)。
             </p>
         </section>
@@ -291,7 +327,7 @@
         <section class="changelog">
             <div class="log-item">
                 <div class="log-version">
-                    v2.0.0 <span class="log-date">2026-11-19</span>
+                    v2026.11.19 <span class="log-date">当前版本</span>
                 </div>
                 <div class="log-content">
                     <ul>
@@ -321,9 +357,9 @@
     </div>
 
     <footer>
-        <p>TerminalHub © 2026 大队长悦. All rights reserved.</p>
+        <p>TerminalHub © 2026 悦. All rights reserved.</p>
         <p>遵循对应的开源协议 (GPLv3 / Apache-2.0).</p>
-        <p>Hosted on Cloudflare Pages / Powered by GitHub.</p>
+        <p>Hosted on GitHub Pages / Powered by GitHub.</p>
     </footer>
 
 </body>
