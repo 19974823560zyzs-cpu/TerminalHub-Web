@@ -413,13 +413,24 @@
                 </div>
                 <div class="log-content">
                     <ul>
+                        <li><span class="highlight">视觉：</span>RGB 故障风启动动画（代码雨汇聚成 Ter），全新桌面图标与下载防呆提示。</li>
+                        <li><span class="highlight">体验：</span>键盘不再自动弹出，由用户自行唤醒，避免误触抢占输入。</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- v2026.11.19 Termux 宿主里程碑版 (折叠) -->
+            <div class="log-item hidden-log">
+                <div class="log-version">
+                    v2026.11.19 <span class="log-date">2026-11-19</span>
+                </div>
+                <div class="log-content">
+                    <ul>
                         <li><span class="highlight">新增：</span>引入 Termux 宿主作为核心树干，支持 <code>pkg install</code> 下载真实二进制。</li>
                         <li><span class="highlight">底层：</span>自编译 <code>libtermux-exec.so</code>，实现 linker re-exec 绕过 noexec，提供 <code>memfd_create</code> 兜底。</li>
-                        <li><span class="highlight">视觉：</span>RGB 故障风启动动画（代码雨汇聚成 Ter），全新桌面图标与下载防呆提示。</li>
                         <li><span class="highlight">修复：</span>补全 <code>SYMLINKS.txt</code> 物化解压（1143 个软链），解决路径死锁。</li>
                         <li><span class="highlight">修复：</span>调整工作目录至 <code>home</code>，解决 heredoc 写入报 <code>Read-only file system</code> 问题。</li>
                         <li><span class="highlight">优化：</span>冷启动增幅仅 +26ms，新增 SAF 离线导入救命通道，全链路断网闭环。</li>
-                        <li><span class="highlight">体验：</span>键盘不再自动弹出，由用户自行唤醒，避免误触抢占输入。</li>
                     </ul>
                 </div>
             </div>
