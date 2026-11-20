@@ -352,18 +352,18 @@
     <canvas id="bg-canvas"></canvas>
 
     <header>
-        <div class="version-badge">当前版本 v2026.11.19.23</div>
+        <div class="version-badge">当前版本 v2026.11.20</div>
         <h1>TerminalHub</h1>
         <p class="subtitle">Android 原生全内置终端应用。零报错、完美输入、自建 Termux 树状架构，突破 Android 10+ 执行限制。</p>
         
         <div class="download-group">
-            <a href="https://wwaxv.lanzouc.com/iJkpq4gmzk4h" class="btn btn-primary" target="_blank">
+            <a href="https://wwaxv.lanzouc.com/iCzQR4grhu1g" class="btn btn-primary" target="_blank">
                 <svg style="width:20px;height:20px;margin-right:8px;" fill="currentColor" viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/></svg>
                 蓝奏云极速下载
-                <div class="pwd-badge">提取码: <span>g605</span></div>
+                <div class="pwd-badge">提取码: <span>dide</span></div>
             </a>
 
-            <a href="https://github.com/19974823560zyzs-cpu/TerminalHub-Web/releases/download/v2026.11.19.23/app-release.apk" class="btn btn-secondary" target="_blank">
+            <a href="https://github.com/19974823560zyzs-cpu/TerminalHub-Web/releases/download/v2026.11.20/app-release.apk" class="btn btn-secondary" target="_blank">
                 <svg style="width:20px;height:20px;margin-right:8px;" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
                 GitHub 极速下载
             </a>
@@ -409,7 +409,23 @@
             <!-- 最新版本 -->
             <div class="log-item">
                 <div class="log-version">
-                    v2026.11.19.23 <span class="log-date">当前版本</span>
+                    v2026.11.20 <span class="log-date">当前版本</span>
+                </div>
+                <div class="log-content">
+                    <ul>
+                        <li><span class="highlight">架构：</span>强制 Fork 官方 Termux 源码，全局物理换皮 <code>com.termux</code> → <code>com.terminalhu</code>（Java 包名 + JNI 符号 + TermuxConstants 全替换），彻底告别自研套壳。</li>
+                        <li><span class="highlight">提权：</span>废弃自研 tsu，官方 <code>rish</code> + <code>rish_shizuku.dex</code> 内置至 <code>$PREFIX/bin</code>，<code>./rish -c "id"</code> 秒出 uid=2000(shell)。</li>
+                        <li><span class="highlight">底层：</span>双前缀 proot bind + termux-exec <code>$TERMUX__PREFIX</code> 运行时重写，<code>pwd</code> 输出 <code>/data/data/com.terminalhu/files/home</code>。</li>
+                        <li><span class="highlight">体验：</span><code>pkg install python</code> 全链路顺滑，实测 Python 3.14.10；修复 GPG key 悬空死链。</li>
+                        <li><span class="highlight">合规：</span>关于页如实区分 Apache-2.0 / GPLv3，附上游与修改后源码链接。</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- v2026.11.19.23 (折叠) -->
+            <div class="log-item hidden-log">
+                <div class="log-version">
+                    v2026.11.19.23 <span class="log-date">2026-11-19</span>
                 </div>
                 <div class="log-content">
                     <ul>
