@@ -546,9 +546,11 @@
                 const x = i * fontSize;
                 const y = drops[i] * fontSize;
 
-                // 头部字符更亮（白色），其余用主题蓝
+                // 每个字符独立随机一个色相，头部字符更亮（更高明度）
+                const hue = Math.floor(Math.random() * 360);
                 const isHead = Math.random() > 0.975;
-                ctx.fillStyle = isHead ? 'rgba(230, 237, 243, 0.9)' : 'rgba(88, 166, 255, 0.75)';
+                const light = isHead ? 85 : 55;
+                ctx.fillStyle = `hsla(${hue}, 100%, ${light}%, 0.9)`;
                 ctx.fillText(text, x, y);
 
                 if (y > height && Math.random() > 0.975) {
