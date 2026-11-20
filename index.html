@@ -24,7 +24,7 @@
             width: 100%;
             height: 100%;
             z-index: -1;
-            background: radial-gradient(circle at 50% 0%, #161b22, var(--bg-color));
+            background: #0d1117;
         }
 
         body {
@@ -511,66 +511,69 @@
             }
         }
 
-        // 动态粒子背景 JS
+        // 动态代码雨背景（Matrix 风格，下落字符流）
         const canvas = document.getElementById('bg-canvas');
         const ctx = canvas.getContext('2d');
         let width, height;
-        let particles = [];
 
         function resize() {
             width = canvas.width = window.innerWidth;
             height = canvas.height = window.innerHeight;
+            // 先铺一层不透明深色底，让代码雨在黑底上拖尾
+            ctx.fillStyle = '#0d1117';
+            ctx.fillRect(0, 0, width, height);
         }
+
+        // 字符集：片假名 + 数字 + 常见符号，贴近经典 Matrix 雨
+        const rainChars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789ABCDEFXYZ<>/{}[]=+-*';
+        const fontSize = 16;
+        let columns = 0;
+        let drops = [];
+
+        function initDrops() {
+            columns = Math.floor(width / fontSize);
+            drops = new Array(columns).fill(0).map(() => Math.floor(Math.random() * -height / fontSize));
+        }
+
+        function draw() {
+            // 半透明深色覆盖，形成下落拖尾残影
+            ctx.fillStyle = 'rgba(13, 17, 23, 0.08)';
+            ctx.fillRect(0, 0, width, height);
+
+            ctx.font = fontSize + 'px monospace';
+            for (let i = 0; i < drops.length; i++) {
+                const text = rainChars[Math.floor(Math.random() * rainChars.length)];
+                const x = i * fontSize;
+                const y = drops[i] * fontSize;
+
+                // 头部字符更亮（白色），其余用主题蓝
+                const isHead = Math.random() > 0.975;
+                ctx.fillStyle = isHead ? 'rgba(230, 237, 243, 0.9)' : 'rgba(88, 166, 255, 0.75)';
+                ctx.fillText(text, x, y);
+
+                if (y > height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+        }
+
         window.addEventListener('resize', resize);
         resize();
 
-        class Particle {
-            constructor() {
-                this.x = Math.random() * width;
-                this.y = Math.random() * height;
-                this.vx = (Math.random() - 0.5) * 0.5;
-                this.vy = (Math.random() - 0.5) * 0.5;
-                this.radius = Math.random() * 1.5 + 0.5;
-            }
-            update() {
-                this.x += this.vx;
-                this.y += this.vy;
-                if (this.x < 0 || this.x > width) this.vx = -this.vx;
-                if (this.y < 0 || this.y > height) this.vy = -this.vy;
-            }
-            draw() {
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-                ctx.fillStyle = 'rgba(88, 166, 255, 0.4)';
-                ctx.fill();
-            }
-        }
-
-        const particleCount = Math.min(Math.floor(width * height / 15000), 100);
-        for (let i = 0; i < particleCount; i++) {
-            particles.push(new Particle());
-        }
+        // 窗口尺寸变化时重新初始化列（防抖，避免拖动时疯狂重算）
+        let rainResizeTimer;
+        window.addEventListener('resize', () => {
+            clearTimeout(rainResizeTimer);
+            rainResizeTimer = setTimeout(() => {
+                resize();
+                initDrops();
+            }, 150);
+        });
+        initDrops();
 
         function animate() {
-            ctx.clearRect(0, 0, width, height);
-            for (let i = 0; i < particles.length; i++) {
-                particles[i].update();
-                particles[i].draw();
-                
-                for (let j = i + 1; j < particles.length; j++) {
-                    const dx = particles[i].x - particles[j].x;
-                    const dy = particles[i].y - particles[j].y;
-                    const dist = Math.sqrt(dx * dx + dy * dy);
-                    if (dist < 120) {
-                        ctx.beginPath();
-                        ctx.moveTo(particles[i].x, particles[i].y);
-                        ctx.lineTo(particles[j].x, particles[j].y);
-                        ctx.strokeStyle = `rgba(88, 166, 255, ${0.15 - dist / 120 * 0.15})`;
-                        ctx.lineWidth = 0.8;
-                        ctx.stroke();
-                    }
-                }
-            }
+            draw();
             requestAnimationFrame(animate);
         }
         animate();
